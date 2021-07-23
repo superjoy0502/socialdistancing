@@ -1,6 +1,7 @@
-name: ${pluginName}
+name: SocialDistancing
+author: superjoy0502
 version: ${version}
-main: ${group}.${name}.plugin.${pluginName}Plugin
+main: io.github.superjoy0502.socialdistancing.SocialDistancingPlugin
 api-version: 1.17
 libraries:
   - io.github.monun:tap:4.1.1
