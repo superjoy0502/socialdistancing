@@ -10,9 +10,13 @@ import org.bukkit.plugin.java.JavaPlugin
  */
 
 class SocialDistancingPlugin : JavaPlugin() {
+    var socialDistanceLevel: Int = 0
 
     override fun onEnable() {
         setupCommands()
+
+        server.pluginManager.registerEvents(SocialDistancingEventListener(), this)
+
         logger.info(ChatColor.GREEN.toString()  + "플러그인 활성화")
     }
 
@@ -26,6 +30,20 @@ class SocialDistancingPlugin : JavaPlugin() {
                 then("ping") {
                     executes {
                         sender.sendMessage(text("pong"))
+                    }
+                }
+            }
+            register("sd"){
+                then("increase"){
+                    executes {
+                        socialDistanceLevel++
+                        server.broadcast(text(ChatColor.RED.toString() + "관리자가 임의로 사회적 거리두기 단계를 " + socialDistanceLevel + "로 격상했습니다."))
+                    }
+                }
+                then("decrease"){
+                    executes {
+                        socialDistanceLevel--
+                        server.broadcast(text(ChatColor.GREEN.toString() + "관리자가 임의로 사회적 거리두기 단계를 " + socialDistanceLevel + "로 완화했습니다."))
                     }
                 }
             }
