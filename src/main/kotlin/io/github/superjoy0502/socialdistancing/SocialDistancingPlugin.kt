@@ -10,17 +10,23 @@ import org.bukkit.plugin.java.JavaPlugin
  */
 
 class SocialDistancingPlugin : JavaPlugin() {
+    private val eventListener: EventListener = EventListener()
+    private val dataStorer: DataStorer = DataStorer()
+
     var socialDistanceLevel: Int = 0
 
     override fun onEnable() {
         setupCommands()
 
-        server.pluginManager.registerEvents(SocialDistancingEventListener(), this)
+        server.pluginManager.registerEvents(eventListener, this)
+        eventListener.virusMap = dataStorer.virusMap
 
         logger.info(ChatColor.GREEN.toString() + "플러그인 활성화")
     }
 
     override fun onDisable() {
+        dataStorer.storeVirusMap(eventListener.virusMap)
+
         logger.info(ChatColor.RED.toString() + "플러그인 비활성화")
     }
 

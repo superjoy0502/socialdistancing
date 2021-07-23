@@ -22,11 +22,11 @@ import kotlin.random.Random
  * @author superjoy0502
  */
 
-class SocialDistancingEventListener : Listener {
+class EventListener : Listener {
     private val pluginManager = Bukkit.getServer().pluginManager
     private val plugin = pluginManager.getPlugin("SocialDistancing") as SocialDistancingPlugin
 
-    private var virusMap: LinkedHashMap<UUID, Boolean> = LinkedHashMap()
+    var virusMap: LinkedHashMap<UUID, Boolean> = LinkedHashMap()
     private val server = Bukkit.getServer()
     private val logger = Bukkit.getLogger()
 
@@ -38,11 +38,11 @@ class SocialDistancingEventListener : Listener {
                 if (m is Monster) {
                     if (Random.nextFloat() <= 0.02) {
                         virusMap.put(m.uniqueId, true)
-                        logger.info("DEBUG: Mob with a virus has spawned")
+//                        logger.info("DEBUG: Mob with a virus has spawned")
                     }
                 }
                 if (m is Phantom) {
-                    logger.info("DEBUG: Phantom has Spawned")
+//                    logger.info("DEBUG: Phantom has Spawned")
                     virusMap.put(m.uniqueId, true)
                 }
             }
@@ -66,8 +66,10 @@ class SocialDistancingEventListener : Listener {
     @EventHandler
     fun onDrinkMilk(event: PlayerItemConsumeEvent) {
         if (event.item.type == Material.MILK_BUCKET) {
-            logger.info("DEBUG: " + event.player.name + " is drinking milk.")
-            event.isCancelled = true
+            if (event.player.hasPotionEffect(PotionEffectType.WITHER)){
+//                logger.info("DEBUG: " + event.player.name + " is drank milk.")
+                event.isCancelled = true
+            }
         }
     }
 
