@@ -36,7 +36,7 @@ class EventListener : Listener {
             if (event.entity is Mob) {
                 val m: Mob = event.entity as Mob
                 if (m is Monster) {
-                    if (Random.nextFloat() <= 0.02) {
+                    if (Random.nextDouble() <= 0.02) {
                         virusMap.put(m.uniqueId, true)
 //                        logger.info("DEBUG: Mob with a virus has spawned")
                     }
