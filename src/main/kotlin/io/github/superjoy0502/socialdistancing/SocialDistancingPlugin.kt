@@ -16,8 +16,8 @@ import org.jetbrains.annotations.NotNull
  */
 
 class SocialDistancingPlugin : JavaPlugin() {
-    private val eventListener: EventListener = EventListener()
-    private val dataStorer: DataStorer = DataStorer()
+    lateinit var eventListener: EventListener
+    lateinit var dataStorer: DataStorer
     private val plugin: JavaPlugin = this
 
     var socialDistanceLevelText: String = "평상시 (1)"
@@ -64,6 +64,10 @@ class SocialDistancingPlugin : JavaPlugin() {
     */
 
     override fun onEnable() {
+
+        eventListener = EventListener()
+        dataStorer = DataStorer()
+
         setupCommands()
 
         server.pluginManager.registerEvents(eventListener, this)
