@@ -65,8 +65,8 @@ class SocialDistancingPlugin : JavaPlugin() {
 
     override fun onEnable() {
 
-        eventListener = EventListener()
         dataStorer = DataStorer()
+        eventListener = EventListener()
 
         setupCommands()
 

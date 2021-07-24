@@ -25,6 +25,7 @@ import kotlin.random.Random
 class EventListener : Listener {
     private val pluginManager = Bukkit.getServer().pluginManager
     private val plugin = pluginManager.getPlugin("SocialDistancing") as SocialDistancingPlugin
+    private val dataStorer = plugin.dataStorer
 
     var virusMap: LinkedHashMap<UUID, Boolean> = LinkedHashMap()
     private val server = Bukkit.getServer()
@@ -38,12 +39,14 @@ class EventListener : Listener {
                 if (m is Monster) {
                     if (Random.nextDouble() <= 0.02) {
                         virusMap.put(m.uniqueId, true)
+                        dataStorer.storeVirusMap(this.virusMap)
 //                        logger.info("DEBUG: Mob with a virus has spawned")
                     }
                 }
                 if (m is Phantom) {
 //                    logger.info("DEBUG: Phantom has Spawned")
                     virusMap.put(m.uniqueId, true)
+                    dataStorer.storeVirusMap(this.virusMap)
                 }
             }
         }
