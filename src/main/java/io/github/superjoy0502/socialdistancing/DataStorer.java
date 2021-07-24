@@ -32,6 +32,7 @@ public class DataStorer {
 
     public void storeVirusMap(LinkedHashMap<UUID, Boolean> map) {
         virusConfig.set("virusMap", map);
+        saveCustomYml(virusFile, virusConfig);
     }
 
     @Nullable
