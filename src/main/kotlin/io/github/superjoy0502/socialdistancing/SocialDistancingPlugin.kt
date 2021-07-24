@@ -71,7 +71,7 @@ class SocialDistancingPlugin : JavaPlugin() {
         setupCommands()
 
         server.pluginManager.registerEvents(eventListener, this)
-        eventListener.virusMap = dataStorer.getVirusMap()
+        if (dataStorer.virusMap != null) eventListener.virusMap = dataStorer.virusMap!!
 
         logger.info(ChatColor.GREEN.toString() + "플러그인 활성화")
     }

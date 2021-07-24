@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,6 +34,7 @@ public class DataStorer {
         virusConfig.set("virusMap", map);
     }
 
+    @Nullable
     public LinkedHashMap<UUID, Boolean> getVirusMap() {
         return (LinkedHashMap<UUID, Boolean>) virusConfig.get("virusMap");
     }
