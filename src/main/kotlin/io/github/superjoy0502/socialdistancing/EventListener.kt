@@ -24,7 +24,7 @@ import kotlin.random.Random
 
 class EventListener : Listener {
     private val pluginManager = Bukkit.getServer().pluginManager
-    private val plugin = pluginManager.getPlugin("SocialDistancing") as SocialDistancingPlugin
+    private val plugin = pluginManager.getPlugin("SocialDistancing") as SocialDistancingPlugin?
 
     var virusMap: LinkedHashMap<UUID, Boolean> = LinkedHashMap()
     private val server = Bukkit.getServer()
@@ -32,7 +32,7 @@ class EventListener : Listener {
 
     @EventHandler
     fun onCreatureSpawn(event: CreatureSpawnEvent) {
-        if (plugin.socialDistanceLevel >= 1) {
+        if (plugin!!.socialDistanceLevel >= 1) {
             if (event.entity is Mob) {
                 val m: Mob = event.entity as Mob
                 if (m is Monster) {
@@ -56,7 +56,7 @@ class EventListener : Listener {
         if (event.damager !is Mob) return
         val m: Mob = event.damager as Mob
         if (!checkIfMobHasVirus(m.uniqueId)) return
-        if (plugin.socialDistanceLevel == 1) {
+        if (plugin!!.socialDistanceLevel == 1) {
             p.addPotionEffect(PotionEffect(PotionEffectType.WITHER, 60 * 20, 0))
             plugin.socialDistanceLevel++
             server.broadcast(text(ChatColor.RED.toString() + "바이러스로 인한 피해가 보고되었다!"))

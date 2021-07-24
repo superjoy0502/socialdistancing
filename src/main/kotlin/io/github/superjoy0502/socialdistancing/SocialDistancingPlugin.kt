@@ -108,7 +108,7 @@ class SocialDistancingPlugin : JavaPlugin() {
                     executes {
                         if (socialDistanceLevel < 4) {
                             socialDistanceLevel++
-                            server.broadcast(text(ChatColor.RED.toString() + "관리자가 임의로 사회적 거리두기 단계를 " + socialDistanceLevel + "로 격상했습니다."))
+                            server.broadcast(text(ChatColor.RED.toString() + "관리자가 임의로 사회적 거리두기 단계를 " + socialDistanceLevelText + " 단계로 격상했습니다."))
                         }
                     }
                 }
@@ -116,7 +116,7 @@ class SocialDistancingPlugin : JavaPlugin() {
                     executes {
                         if (socialDistanceLevel > 0){
                             socialDistanceLevel--
-                            server.broadcast(text(ChatColor.GREEN.toString() + "관리자가 임의로 사회적 거리두기 단계를 " + socialDistanceLevel + "로 완화했습니다."))
+                            server.broadcast(text(ChatColor.GREEN.toString() + "관리자가 임의로 사회적 거리두기 단계를 " + socialDistanceLevelText + " 단계로 완화했습니다."))
                         }
                     }
                 }
