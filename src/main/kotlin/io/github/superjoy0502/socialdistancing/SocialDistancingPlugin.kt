@@ -2,13 +2,10 @@ package io.github.superjoy0502.socialdistancing
 
 import io.github.monun.kommand.kommand
 import net.kyori.adventure.text.Component.text
-import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.title.Title
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
-import org.bukkit.Sound
 import org.bukkit.plugin.java.JavaPlugin
-import org.jetbrains.annotations.NotNull
 
 
 /**
@@ -89,16 +86,21 @@ class SocialDistancingPlugin : JavaPlugin() {
                 }
             }
             register("socialdistancing") {
-                then("start"){
+                then("start") {
                     executes {
                         world.time = 0
                         for (player in Bukkit.getOnlinePlayers()) {
-                            player.showTitle(Title.title(text(ChatColor.GREEN.toString() + "사회적 거리두기 야생"), text(ChatColor.GREEN.toString() + "Day 0")))
+                            player.showTitle(
+                                Title.title(
+                                    text(ChatColor.GREEN.toString() + "사회적 거리두기 야생"),
+                                    text(ChatColor.GREEN.toString() + "Day 0")
+                                )
+                            )
                         }
                         val scheduler = server.scheduler
                         scheduler.scheduleSyncDelayedTask(plugin, Runnable {
                             @Override
-                            fun run(){
+                            fun run() {
                                 socialDistanceLevel = 1
                             }
                         }, 24000L)
@@ -114,7 +116,7 @@ class SocialDistancingPlugin : JavaPlugin() {
                 }
                 then("decrease") {
                     executes {
-                        if (socialDistanceLevel > 0){
+                        if (socialDistanceLevel > 0) {
                             socialDistanceLevel--
                             server.broadcast(text(ChatColor.GREEN.toString() + "관리자가 임의로 사회적 거리두기 단계를 " + socialDistanceLevelText + " 단계로 완화했습니다."))
                         }
