@@ -65,19 +65,20 @@ class SocialDistancingPlugin : JavaPlugin() {
 
     override fun onEnable() {
 
-        dataStorer = DataStorer()
-        eventListener = EventListener()
+        dataStorer = DataStorer(this)
+        eventListener = EventListener(this)
 
         setupCommands()
 
         server.pluginManager.registerEvents(eventListener, this)
-        if (dataStorer.virusMap != null) eventListener.virusMap = dataStorer.virusMap!!
+        dataStorer.onStartUp(this)
+//        if (dataStorer.virusMap != null) eventListener.virusMap = dataStorer.virusMap!!
 
         logger.info(ChatColor.GREEN.toString() + "플러그인 활성화")
     }
 
     override fun onDisable() {
-        dataStorer.storeVirusMap(eventListener.virusMap)
+//        dataStorer.storeVirusMap(eventListener.virusMap)
 
         logger.info(ChatColor.RED.toString() + "플러그인 비활성화")
     }
@@ -97,7 +98,6 @@ class SocialDistancingPlugin : JavaPlugin() {
                         world.time = 0
                         for (player in Bukkit.getOnlinePlayers()) {
                             player.showTitle(Title.title(text(ChatColor.GREEN.toString() + "사회적 거리두기 야생"), text(ChatColor.GREEN.toString() + "Day 0")))
-                            player.playSound(Sound.UI_TOAST_CHALLENGE_COMPLETE as @NotNull net.kyori.adventure.sound.Sound)
                         }
                         val scheduler = server.scheduler
                         scheduler.scheduleSyncDelayedTask(plugin, Runnable {

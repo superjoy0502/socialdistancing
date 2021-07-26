@@ -16,18 +16,17 @@ import org.bukkit.event.player.PlayerItemConsumeEvent
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.random.Random
 
 /**
  * @author superjoy0502
  */
 
-class EventListener : Listener {
+class EventListener constructor(private val plugin: SocialDistancingPlugin) : Listener {
     private val pluginManager = Bukkit.getServer().pluginManager
-    private val plugin = pluginManager.getPlugin("SocialDistancing") as SocialDistancingPlugin
     private val dataStorer = plugin.dataStorer
 
-    var virusMap: LinkedHashMap<UUID, Boolean> = LinkedHashMap()
     private val server = Bukkit.getServer()
     private val logger = Bukkit.getLogger()
 
@@ -38,15 +37,13 @@ class EventListener : Listener {
                 val m: Mob = event.entity as Mob
                 if (m is Monster) {
                     if (Random.nextDouble() <= 0.02) {
-                        virusMap.put(m.uniqueId, true)
-                        dataStorer.storeVirusMap(this.virusMap)
+                        setEntityUUIDtoYML(m.uniqueId)
 //                        logger.info("DEBUG: Mob with a virus has spawned")
                     }
                 }
                 if (m is Phantom) {
 //                    logger.info("DEBUG: Phantom has Spawned")
-                    virusMap.put(m.uniqueId, true)
-                    dataStorer.storeVirusMap(this.virusMap)
+                    setEntityUUIDtoYML(m.uniqueId)
                 }
             }
         }
@@ -62,7 +59,7 @@ class EventListener : Listener {
         if (plugin.socialDistanceLevel == 1) {
             p.addPotionEffect(PotionEffect(PotionEffectType.WITHER, 60 * 20, 0))
             plugin.socialDistanceLevel++
-            server.broadcast(text(ChatColor.RED.toString() + "바이러스로 인한 피해가 보고되었다!"))
+//            server.broadcast(text(ChatColor.RED.toString() + "바이러스로 인한 피해가 보고되었다!"))
         }
     }
 
@@ -76,12 +73,19 @@ class EventListener : Listener {
         }
     }
 
+    private fun setEntityUUIDtoYML(uuid: UUID){
+        dataStorer.virusConfig.set("virusMap.entities", uuid.toString())
+        dataStorer.virusConfig.save(dataStorer.getVirusFile())
+    }
+
     private fun checkIfMobHasVirus(uuid: UUID): Boolean {
-        if (uuid in virusMap.keys) {
-            if (virusMap.get(uuid) == true) {
-                return true
-            }
+        val keys: ArrayList<String> = ArrayList(dataStorer.getVirusConfig().getStringList("virusMap.entities"))
+        val keysUUIDList: ArrayList<UUID> = ArrayList()
+        for (key in keys){
+            val stringKey: String = key
+            val uuidKey: UUID = UUID.nameUUIDFromBytes(stringKey.toByteArray())
+            keysUUIDList.add(uuidKey)
         }
-        return false
+        return uuid in keysUUIDList
     }
 }

@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
@@ -16,27 +17,27 @@ import java.util.UUID;
  */
 
 public class DataStorer {
-    private final PluginManager pluginManager = Bukkit.getServer().getPluginManager();
-    private final SocialDistancingPlugin plugin = (SocialDistancingPlugin) pluginManager.getPlugin("SocialDistancing");
+    private SocialDistancingPlugin plugin;
+
+    public DataStorer(SocialDistancingPlugin plugin){
+        this.plugin = plugin;
+    }
 
     File virusFile = new File(plugin.getDataFolder(), "virusMap.yml");
     FileConfiguration virusConfig = YamlConfiguration.loadConfiguration(virusFile);
 
-    public void saveCustomYml(File ymlFile, FileConfiguration ymlConfig) {
-        try {
-            ymlConfig.save(ymlFile);
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void onStartUp(SocialDistancingPlugin plugin){
+        this.plugin = plugin;
+        if (!virusFile.exists()){
+            plugin.saveResource("virusMap.yml", false);
         }
     }
 
-    public void storeVirusMap(LinkedHashMap<UUID, Boolean> map) {
-        virusConfig.set("virusMap", map);
-        saveCustomYml(virusFile, virusConfig);
+    public FileConfiguration getVirusConfig(){
+        return virusConfig;
     }
 
-    @Nullable
-    public LinkedHashMap<UUID, Boolean> getVirusMap() {
-        return (LinkedHashMap<UUID, Boolean>) virusConfig.get("virusMap");
+    public File getVirusFile(){
+        return virusFile;
     }
 }
