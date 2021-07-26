@@ -17,20 +17,15 @@ import java.util.UUID;
  */
 
 public class DataStorer {
-    private SocialDistancingPlugin plugin;
+    File virusFile;
+    FileConfiguration virusConfig;
 
     public DataStorer(SocialDistancingPlugin plugin){
-        this.plugin = plugin;
-    }
-
-    File virusFile = new File(plugin.getDataFolder(), "virusMap.yml");
-    FileConfiguration virusConfig = YamlConfiguration.loadConfiguration(virusFile);
-
-    public void onStartUp(SocialDistancingPlugin plugin){
-        this.plugin = plugin;
+        this.virusFile = new File(plugin.getDataFolder(), "virusMap.yml");
         if (!virusFile.exists()){
             plugin.saveResource("virusMap.yml", false);
         }
+        this.virusConfig = YamlConfiguration.loadConfiguration(virusFile);
     }
 
     public FileConfiguration getVirusConfig(){

@@ -71,15 +71,11 @@ class SocialDistancingPlugin : JavaPlugin() {
         setupCommands()
 
         server.pluginManager.registerEvents(eventListener, this)
-        dataStorer.onStartUp(this)
-//        if (dataStorer.virusMap != null) eventListener.virusMap = dataStorer.virusMap!!
 
         logger.info(ChatColor.GREEN.toString() + "플러그인 활성화")
     }
 
     override fun onDisable() {
-//        dataStorer.storeVirusMap(eventListener.virusMap)
-
         logger.info(ChatColor.RED.toString() + "플러그인 비활성화")
     }
 
